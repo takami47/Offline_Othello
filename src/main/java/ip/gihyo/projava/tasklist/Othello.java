@@ -111,9 +111,9 @@ public class Othello extends Application {
         return false;
     }
 
-    private void flip(int ll, int __, int deltaRow, int deltaCol, char color) {
-        int i = ll + deltaRow;
-        int j = __ + deltaCol;
+    private void flip(int col, int row, int deltaRow, int deltaCol, char color) {
+        int i = col + deltaRow;
+        int j = row + deltaCol;
 
         while (i >= 0 && i < BOX_COUNT && j >= 0 && j < BOX_COUNT && board[i][j] != color) {
             board[i][j] = color;
@@ -125,15 +125,15 @@ public class Othello extends Application {
     private void updateBoard() {
         visualBoard.getChildren().clear();  // 各マスのメモリが気になるならこのコードを入れる（全マス初期化コード）
 
-        for (int ll = 0; ll < BOX_COUNT; ll++) {           // ← 行（縦方向）のループ
-            for (int __ = 0; __ < BOX_COUNT; __++) {       // ← 列（横方向）のループ
-                StackPane cell = createCell(ll, __);   // ← マス（StackPane）を作成、クリック処理も登録される
+        for (int col = 0; col < BOX_COUNT; col++) {           // ← 行（縦方向）のループ
+            for (int row = 0; row < BOX_COUNT; row++) {       // ← 列（横方向）のループ
+                StackPane cell = createCell(col, row);   // ← マス（StackPane）を作成、クリック処理も登録される
 
-                if (board[ll][__] == 'B' || board[ll][__] == 'W') {     // ← そのマスに黒か白の石があるなら
-                    cell.getChildren().add(createKoma(board[ll][__]));   // ← 石の見た目（Circle）を追加
+                if (board[col][row] == 'B' || board[col][row] == 'W') {     // ← そのマスに黒か白の石があるなら
+                    cell.getChildren().add(createKoma(board[col][row]));   // ← 石の見た目（Circle）を追加
                 }
 
-                visualBoard.add(cell, __, ll);  // ← できたマスを盤面（GridPane）に配置する
+                visualBoard.add(cell, row, col);  // ← できたマスを盤面（GridPane）に配置する
             }
         }
 
