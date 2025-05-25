@@ -71,7 +71,7 @@ public class Othello extends Application {
 
         scoreLabel.setText("黒: " + black + "\n白: " + white);  // ← スコアラベルに現在の黒白の数を表示
     }
-    
+
     private StackPane createCell(int col, int row) {
         StackPane cell = new StackPane();
         cell.setPrefSize(CELL_SIZE, CELL_SIZE);
@@ -100,7 +100,6 @@ public class Othello extends Application {
                         }
                     }
                 }
-
                 board[col][row] = currentPlayer;
                 currentPlayer = (currentPlayer == 'B') ? 'W' : 'B';
                 updateBoard();
@@ -123,9 +122,9 @@ public class Othello extends Application {
         return spec;
     }
 
-    private boolean canFlip(int ll, int __, int deltaRow, int deltaCol, char color) {
-        int i = ll + deltaRow;
-        int j = __ + deltaCol;
+    private boolean canFlip(int col, int row, int deltaRow, int deltaCol, char color) {
+        int i = col + deltaRow;
+        int j = row + deltaCol;
         boolean seenOpponent = false;
 
         while (i >= 0 && i < BOX_COUNT && j >= 0 && j < BOX_COUNT) {
