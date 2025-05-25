@@ -36,6 +36,42 @@ public class Othello extends Application {
         stage.show();
     }
 
+    private void initBoard() {
+        for (int i = 0; i < BOX_COUNT; i++)
+            for (int j = 0; j < BOX_COUNT; j++)
+                board[i][j] = '.';
+        board[3][3] = board[4][4] = 'W';
+        board[3][4] = board[4][3] = 'B';
+    }
+
+    private void updateBoard() {
+        visualBoard.getChildren().clear();  // 各マスのメモリが気になるならこのコードを入れる（全マス初期化コード）
+
+        for (int col = 0; col < BOX_COUNT; col++) {           // ← 行（縦方向）のループ
+            for (int row = 0; row < BOX_COUNT; row++) {       // ← 列（横方向）のループ
+                StackPane cell = createCell(col, row);   // ← マス（StackPane）を作成、クリック処理も登録される
+
+                if (board[col][row] == 'B' || board[col][row] == 'W') {     // ← そのマスに黒か白の石があるなら
+                    cell.getChildren().add(createKoma(board[col][row]));   // ← 石の見た目（Circle）を追加
+                }
+
+                visualBoard.add(cell, row, col);  // ← できたマスを盤面（GridPane）に配置する
+            }
+        }
+
+        // ↓ 黒と白の石の数をカウントしてスコア表示を更新する部分
+
+        int black = 0, white = 0;  // ← 黒と白のカウント変数を用意
+        for (int i = 0; i < BOX_COUNT; i++) {          // ← 行のループ
+            for (int j = 0; j < BOX_COUNT; j++) {      // ← 列のループ
+                if (board[i][j] == 'B') black++;  // ← 黒の石をカウント
+                if (board[i][j] == 'W') white++;  // ← 白の石をカウント
+            }
+        }
+
+        scoreLabel.setText("黒: " + black + "\n白: " + white);  // ← スコアラベルに現在の黒白の数を表示
+    }
+    
     private StackPane createCell(int col, int row) {
         StackPane cell = new StackPane();
         cell.setPrefSize(CELL_SIZE, CELL_SIZE);
@@ -87,14 +123,6 @@ public class Othello extends Application {
         return spec;
     }
 
-    private void initBoard() {
-        for (int i = 0; i < BOX_COUNT; i++)
-            for (int j = 0; j < BOX_COUNT; j++)
-                board[i][j] = '.';
-        board[3][3] = board[4][4] = 'W';
-        board[3][4] = board[4][3] = 'B';
-    }
-
     private boolean canFlip(int ll, int __, int deltaRow, int deltaCol, char color) {
         int i = ll + deltaRow;
         int j = __ + deltaCol;
@@ -120,34 +148,6 @@ public class Othello extends Application {
             i += deltaRow;
             j += deltaCol;
         }
-    }
-
-    private void updateBoard() {
-        visualBoard.getChildren().clear();  // 各マスのメモリが気になるならこのコードを入れる（全マス初期化コード）
-
-        for (int col = 0; col < BOX_COUNT; col++) {           // ← 行（縦方向）のループ
-            for (int row = 0; row < BOX_COUNT; row++) {       // ← 列（横方向）のループ
-                StackPane cell = createCell(col, row);   // ← マス（StackPane）を作成、クリック処理も登録される
-
-                if (board[col][row] == 'B' || board[col][row] == 'W') {     // ← そのマスに黒か白の石があるなら
-                    cell.getChildren().add(createKoma(board[col][row]));   // ← 石の見た目（Circle）を追加
-                }
-
-                visualBoard.add(cell, row, col);  // ← できたマスを盤面（GridPane）に配置する
-            }
-        }
-
-        // ↓ 黒と白の石の数をカウントしてスコア表示を更新する部分
-
-        int black = 0, white = 0;  // ← 黒と白のカウント変数を用意
-        for (int i = 0; i < BOX_COUNT; i++) {          // ← 行のループ
-            for (int j = 0; j < BOX_COUNT; j++) {      // ← 列のループ
-                if (board[i][j] == 'B') black++;  // ← 黒の石をカウント
-                if (board[i][j] == 'W') white++;  // ← 白の石をカウント
-            }
-        }
-
-        scoreLabel.setText("黒: " + black + "\n白: " + white);  // ← スコアラベルに現在の黒白の数を表示
     }
 
 }
